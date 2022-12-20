@@ -1,10 +1,11 @@
 import { useJsApiLoader } from "@react-google-maps/api";
 import { googleMapsApiKey } from "./env";
+import { useState } from "react";
 
 export type Map = google.maps.Map;
 
 type Props = {
-  defaultPosition: { lat: number; lng: number };
+  defaultPosition: google.maps.LatLngLiteral;
 };
 
 export const useMap = ({ defaultPosition }: Props) => {
@@ -14,10 +15,13 @@ export const useMap = ({ defaultPosition }: Props) => {
     googleMapsApiKey,
   });
 
+  const [map, setMap] = useState<Map | null>(null);
+
   const onLoad = (map: Map) => {
     const bounds = new window.google.maps.LatLngBounds(defaultPosition);
     map.fitBounds(bounds);
+    setMap(map);
   };
 
-  return { isLoaded, onLoad };
+  return { map, isLoaded, onLoad };
 };
