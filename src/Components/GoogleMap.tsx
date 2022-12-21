@@ -1,6 +1,7 @@
 import { GoogleMap as GoogleMapComponent } from "@react-google-maps/api";
 import React, { FC } from "react";
 import { useMap } from "./useMap";
+import { InterfaceMap } from "./GoogleMapStyles";
 
 type Props = {
   defaultPosition: {
@@ -10,7 +11,7 @@ type Props = {
 };
 
 const GoogleMap: FC<Props> = (props) => {
-  const { isLoaded, onLoad } = useMap({
+  const { isLoaded, onLoad, zoom } = useMap({
     defaultPosition: props.defaultPosition,
   });
 
@@ -19,10 +20,16 @@ const GoogleMap: FC<Props> = (props) => {
     height: "75vh",
   };
 
+  const googleMapOptions = {
+    styles: InterfaceMap,
+  };
+
   return (
     <>
       {isLoaded ? (
         <GoogleMapComponent
+          options={googleMapOptions}
+          zoom={zoom}
           mapContainerStyle={containerStyle}
           onLoad={onLoad}
         ></GoogleMapComponent>
